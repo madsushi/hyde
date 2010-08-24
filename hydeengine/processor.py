@@ -142,13 +142,16 @@ class Processor(object):
                     fragment = "\\"
                 else:
                     fragment = "/"
-            if fragment in processors:           
+            if fragment in processors:
                 processor_config = processors[fragment]
                 for processor_name, params in processor_config.iteritems():
-                    self.logger.debug("           Executing %s" % processor_name)
-                    processor = load_processor(processor_name) 
-                    if not params:
-                        params = {}
-                    params.update( {'node': child})
-                    processor.process(child.temp_folder, params)
+                    if hasattr(params, 'keys'):
+                        params = [params]
+                    for ps in params:
+                        self.logger.debug("           Executing %s" % processor_name)
+                        processor = load_processor(processor_name)
+                        if not ps:
+                            ps = {}
+                        ps.update( {'node': child})
+                        processor.process(child.temp_folder, ps)
 
