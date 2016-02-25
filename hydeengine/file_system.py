@@ -583,6 +583,7 @@ class Folder(FileSystemEntity):
                 visitor.visit_complete()
 
         for root, dirs, a_files in os.walk(self.path):
+            dirs.sort()
             folder = Folder(root)
             if not __visit_folder__(visitor, folder):
                 dirs[:] = []
